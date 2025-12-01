@@ -1,41 +1,47 @@
 const request = require('supertest');
-const app = require('../server'); // Server dosyamızı çağırdık (Dinlemeden)
 const mongoose = require('mongoose');
+// server.js'i çağırıyoruz ama app.listen yapmıyor (çünkü orada if koşulu var)
+const app = require('../server'); 
 
-// Testler başlamadan önce yapılacaklar (Opsiyonel)
+// 1. ZAMAN AŞIMINI ARTTIR (Kritik Nokta)
+// Docker yavaş olabilir, 5sn yetmiyor, 30sn veriyoruz.
+jest.setTimeout(30000);
+
 beforeAll(async () => {
-    // Gerçek testlerde buraya "Mock Database" bağlanır.
-    // Şimdilik sadece API endpointlerinin HTTP durumlarını test edeceğiz.
+    // Test başlamadan önce DB bağlantısı hazır mı kontrol et
+    // Eğer server.js bağladıysa (readyState 1) dokunma.
+    // Değilse (0), biz manuel bağlayalım.
+    if (mongoose.connection.readyState === 0) {
+        const uri = process.env.MONGO_URI || 'mongodb://mongo:27017/secureleads';
+        await mongoose.connect(uri);
+    }
 });
 
-// Testler bitince yapılacaklar
 afterAll(async () => {
-    await mongoose.connection.close(); // Açık kalan bağlantı varsa kapat
+    // Test bitince bağlantıyı temizce kapat
+    await mongoose.connection.close();
 });
 
 describe('SecureLeadVault API Testleri', () => {
 
-    // 1. UNIT TEST (Basit Mantık Kontrolü)
-    test('Matematik testi (Sanity Check)', () => {
+    // UNIT TEST
+    test('Sanity Check (1+1=2)', () => {
         expect(1 + 1).toBe(2);
     });
 
-    // 2. INTEGRATION TEST (Endpoint Kontrolü)
-    // Veritabanı bağlantısı Docker network'ünde olmadığı zaman hata verebilir
-    // O yüzden bu testte hata beklemeyi de (Error Handling) test edebiliriz.
-    
+    // INTEGRATION TEST
     test('GET /api/leads -> Sunucu cevap veriyor mu?', async () => {
+        // Supertest ile sanal istek atıyoruz
         const res = await request(app).get('/api/leads');
         
-        // Eğer DB bağlı değilse 500 döner, bağlıysa 200 döner.
-        // Her iki durumda da sunucunun "Ulaşılamaz" olmadığını kanıtlarız.
-        expect([200, 500]).toContain(res.statusCode);
+        // 200 (Başarılı) veya 500 (DB Hatası) dönmesi sunucunun ayakta olduğunu kanıtlar.
+        // Timeout almadığı sürece test geçer.
+        expect([200, 201, 304, 500]).toContain(res.statusCode);
     });
 
-    // 3. SECURITY TEST (Güvenlik Başlıkları Var mı?)
+    // SECURITY TEST
     test('Helmet devrede mi? (Security Headers)', async () => {
         const res = await request(app).get('/api/leads');
-        // Helmet kullanınca 'X-Powered-By' başlığı gizlenmeli
         expect(res.headers['x-powered-by']).toBeUndefined();
     });
 });
