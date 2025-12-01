@@ -73,5 +73,23 @@ if (require.main === module) {
     app.listen(PORT, () => console.log(`🚀 Server ${PORT} portunda çalışıyor`));
 }
 
+
 // Ama test için import ediliyorsa, sadece app'i dışarı ver (Listen etme)
 module.exports = app;
+mongoose.connect(MONGO_URI)
+  .then(async () => {
+    console.log('✅ MongoDB Bağlantısı Başarılı');
+
+    // --- MOCK DATA (SEED) ---
+    const count = await Lead.countDocuments();
+    if (count === 0) {
+      await Lead.insertMany([
+        { name: "Seçil Aydemir", company: "TechNova", amount: 12000 },
+        { name: "John Carter", company: "CloudWorks", amount: 18000 },
+        { name: "Sait Bütün", company: "SaitCloud", amount: 25000 }, 
+        { name: "Emily Stone", company: "DataRise", amount: 9000 }
+      ]);
+      console.log("🌱 Mock veriler eklendi (Seed atıldı)");
+    }
+  })
+  .catch(err => console.error('❌ MongoDB Hatası:', err));
