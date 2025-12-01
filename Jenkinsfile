@@ -22,7 +22,7 @@ pipeline{
                 script {
                     echo "Backend Konteyneri İçinde Test Koşuluyor..."  
                     sh """
-                    docker exec fullstackdevsecops-backend-1 \
+                    docker exec secure-backend \
                     sh -c "export MONGO_URI=mongodb://mongo:27017/secureleads && npm test -- --runInBand"
                     """
                 }
