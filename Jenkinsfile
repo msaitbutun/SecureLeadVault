@@ -17,14 +17,14 @@ pipeline{
 
         }
 
-        stage('2- Unit & Integration Tests'){
-            steps{
-                dir('backend'){
-                    echo "Backend testleri çalıştırılıyor..."
-                    sh 'rm -rf node_modules'
-                    sh 'rm -rf package-lock.json'
-                    sh 'npm install'
-                    sh 'npm test'
+        stage('🧪 Unit & Integration Tests') {
+            steps {
+                script {
+                    echo "Backend Konteyneri İçinde Test Koşuluyor..."  
+                    sh """
+                    docker exec fullstackdevsecops-backend-1 \
+                    sh -c "export MONGO_URI=mongodb://mongo:27017/secureleads && npm test -- --runInBand"
+                    """
                 }
             }
         }
