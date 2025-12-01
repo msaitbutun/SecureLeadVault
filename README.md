@@ -1,6 +1,4 @@
 
-
-
 # 🛡️ SecureLeadVault: Enterprise Grade DevSecOps CRM
 
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
@@ -8,19 +6,19 @@
 ![Security](https://img.shields.io/badge/security-hardened-red)
 ![Coverage](https://img.shields.io/badge/tests-passing-success)
 
-**SecureLeadVault**, modern **DevSecOps** prensipleri (Shift-Left Security) ile geliştirilmiş; uçtan uca güvenli, konteynerize edilmiş ve otomatik test süreçlerine sahip bir MERN Stack uygulamasıdır.
+**SecureLeadVault** is an end-to-end secure, containerized MERN Stack application developed with modern **DevSecOps** principles (Shift-Left Security) and automated testing processes.
 
-Bu proje, sadece bir CRM uygulaması değil, **Test-Driven (TDD)** ve **Secure-by-Design** mimari yaklaşımının bir "Case Study"sidir.
+This project is not just a CRM application, but a "Case Study" demonstrating **Test-Driven (TDD)** and **Secure-by-Design** architectural approaches.
 
 ---
 
-## 🏗️ Sistem Mimarisi (Architecture)
+## 🏗️ System Architecture
 
-Proje, mikroservis mimarisine geçişe uygun, izole edilmiş Docker konteynerleri üzerinde çalışır.
+The project runs on isolated Docker containers, suitable for transitioning to a microservices architecture.
 
 ```mermaid
 graph TD;
-    User((Kullanıcı)) -->|HTTP/HTTPS| Frontend["React + Vite (Nginx)"];
+    User((User)) -->|HTTP/HTTPS| Frontend["React + Vite (Nginx)"];
     Frontend -->|REST API| Backend["Node.js + Express"];
     Backend -->|Read/Write| DB[(MongoDB)];
     
@@ -33,23 +31,23 @@ graph TD;
 
 -----
 
-## 🚀 Temel Özellikler (Key Features)
+## 🚀 Key Features
 
-### 🛡️ Güvenlik (DevSecOps)
+### 🛡️ Security (DevSecOps)
 
-  * **Role-Based Access Control (RBAC):** `Sales Rep` ve `Manager` rolleri simüle edilerek yetkisiz erişimler engellenmiştir.
-  * **Container Hardening:** Docker imajları optimize edilmiş ve `root` olmayan kullanıcı prensipleri uygulanmıştır.
-  * **Security Headers:** `Helmet` kütüphanesi ile HTTP başlık güvenliği sağlanmıştır.
-  * **Attack Surface Reduction:** Gereksiz portlar kapatılmış, sadece API Gateway (Nginx) dışarıya açılmıştır.
+  * **Role-Based Access Control (RBAC):** Unauthorized access is prevented by simulating `Sales Rep` and `Manager` roles.
+  * **Container Hardening:** Docker images are optimized, and non-root user principles are applied.
+  * **Security Headers:** HTTP header security is enforced using the `Helmet` library.
+  * **Attack Surface Reduction:** Unnecessary ports are closed; only the API Gateway (Nginx) is exposed.
 
-### ⚙️ DevOps & Otomasyon
+### ⚙️ DevOps & Automation
 
-  * **Multi-Stage Docker Builds:** Frontend imaj boyutu 1GB'dan **20MB** seviyesine düşürülmüştür (Alpine Linux optimizasyonu).
+  * **Multi-Stage Docker Builds:** Frontend image size reduced from 1GB to **20MB** (Alpine Linux optimization).
   * **Jenkins CI/CD Pipeline:**
-      * 🧪 **Automated Testing:** Jest ve Supertest ile her commit sonrası otomatik API testleri.
-      * 🔍 **SAST & Vulnerability Scanning:** Bağımlılık ve imaj taramaları (Trivy entegrasyonu).
+      * 🧪 **Automated Testing:** Automatic API tests via Jest and Supertest after every commit.
+      * 🔍 **SAST & Vulnerability Scanning:** Dependency and image scanning (Trivy integration).
 
-### 💻 Teknoloji Yığını (Tech Stack)
+### 💻 Tech Stack
 
   * **Frontend:** React 18, Vite, CSS3 (Modern Dashboard UI)
   * **Backend:** Node.js, Express, Mongoose
@@ -58,37 +56,35 @@ graph TD;
 
 -----
 
-## 📸 Proje Görselleri
+## 📸 Project Screenshots
 
-### 1\. Güvenli Dashboard & UI
+### 1\. Secure Dashboard & UI
 
-Modern ve kullanıcı dostu arayüz. Rol tabanlı yetki uyarılarını içerir.
+Modern and user-friendly interface. Includes role-based permission alerts.
 
 <img width="2866" height="1701" alt="image" src="https://github.com/user-attachments/assets/186e1be7-0b83-4755-b140-084be6c3caf7" />
 
+### 2\. Jenkins Pipeline Success
 
-### 2\. Jenkins Pipeline Başarısı
-
-Test, Güvenlik Taraması ve Build aşamalarının başarıyla tamamlandığı otomatik süreç.
+Automated process where Test, Security Scan, and Build stages were completed successfully.
 
 <img width="2765" height="811" alt="image" src="https://github.com/user-attachments/assets/61bb8c2f-c671-43ad-8573-4d30ab446d69" />
 
-
 -----
 
-## 🛠️ Kurulum (Installation)
+## 🛠️ Installation
 
-Projeyi yerel ortamınızda ayağa kaldırmak için **Node.js kurmanıza gerek yoktur.** Sadece Docker yeterlidir.
+To run the project locally, **you do not need Node.js installed.** Docker is sufficient.
 
 ```bash
-# 1. Repoyu klonlayın
+# 1. Clone the repo
 git clone [https://github.com/msaitbutun/SecureLeadVault.git](https://github.com/msaitbutun/SecureLeadVault.git)
 cd SecureLeadVault
 
-# 2. Sistemi başlatın (Build dahil)
-docker-compose up -d -f --build
+# 2. Start the system (including Build)
+docker-compose up -d --build
 
-# 3. Servislere erişin
+# 3. Access services
 # Frontend: http://localhost:5173
 # Backend API: http://localhost:5000
 # Jenkins CI: http://localhost:8080
@@ -96,11 +92,11 @@ docker-compose up -d -f --build
 
 -----
 
-## 🧪 Test Süreçleri
+## 🧪 Testing Processes
 
-Backend testleri, Docker konteyneri içinde izole bir ortamda çalıştırılır. Veritabanı bağlantısı **Mocking** (Simülasyon) yöntemiyle test edilerek dış bağımlılıklar ortadan kaldırılmıştır.
+Backend tests run inside the Docker container in an isolated environment. Database connection is handled via **Mocking**, eliminating external dependencies.
 
-Manuel test etmek için:
+To run tests manually:
 
 ```bash
 docker exec secure-backend npm test
@@ -109,6 +105,4 @@ docker exec secure-backend npm test
 -----
 
 **Developed by Muhammed Sait Bütün**
-
-
 
