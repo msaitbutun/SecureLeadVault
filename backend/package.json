@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-"test": "MONGO_URI=mongodb://127.0.0.1:27017/secureleads jest --runInBand --detectOpenHandles --forceExit"  },
+"test": "jest --runInBand --detectOpenHandles --forceExit",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
