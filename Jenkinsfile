@@ -17,14 +17,21 @@ pipeline{
 
         }
 
+      // 2. TEST AŞAMASI (Inject & Run)
         stage('🧪 Unit & Integration Tests') {
             steps {
                 script {
-                    echo "Backend Konteyneri İçinde Test Koşuluyor..."  
-                    sh """
-                    docker exec secure-backend \
-                    sh -c "export MONGO_URI=mongodb://mongo:27017/secureleads && npm test -- --runInBand"
-                    """
+                    echo "♻️ Güncel Test Dosyası Konteynere Yükleniyor..."
+                    
+                    // GitHub'dan gelen yeni dosyayı, çalışan konteynerin içine zorla kopyala
+                    // (Dosya yolu /app/tests/ çünkü Dockerfile WORKDIR /app demişti)
+                    sh "docker cp backend/tests/api.test.js secure-backend:/app/tests/api.test.js"
+                    
+                    echo "🚀 Test Başlatılıyor (Direct Execution)..."
+                    
+                    // npm test kullanmıyoruz, çünkü package.json eski olabilir.
+                    // Direkt jest'i çağırıyoruz.
+                    sh "docker exec secure-backend npx jest tests/api.test.js --runInBand --detectOpenHandles --forceExit"
                 }
             }
         }
