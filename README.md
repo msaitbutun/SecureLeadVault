@@ -108,9 +108,7 @@ docker exec secure-backend npm test
 
 -----
 
-**Developed by [Adın Soyadın]**
+**Developed by Muhammed Sait Bütün**
 
-```
 
-**Son Hatırlatma:** Yapıştırdıktan sonra "Edit" modunda ekran görüntülerini (küfürsüz ve CSS'i düzgün olanları) ilgili yerlere sürükleyip bırakmayı unutma. Geçmiş olsun, eline sağlık! 👊
-```
+
