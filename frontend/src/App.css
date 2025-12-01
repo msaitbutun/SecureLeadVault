@@ -1,10 +1,10 @@
 :root {
-  --primary: #0f172a;       /* Koyu Lacivert (Kurumsal) */
-  --accent: #3b82f6;        /* Teknoloji Mavisi */
+  --primary: #0f172a;       /* Koyu Lacivert */
+  --accent: #3b82f6;        /* Mavi */
   --surface: #ffffff;       /* Beyaz */
-  --background: #f1f5f9;    /* Açık Gri Arkaplan */
+  --background: #f1f5f9;    /* Açık Gri */
   --text-main: #334155;     /* Koyu Gri */
-  --text-muted: #64748b;    /* Açık Gri */
+  --text-muted: #64748b;    /* Silik Gri */
   --success: #10b981;       /* Yeşil */
   --border: #e2e8f0;
 }
@@ -17,13 +17,13 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Layout */
+/* --- Layout --- */
 .app-container {
   display: flex;
   min-height: 100vh;
 }
 
-/* Sidebar */
+/* --- Sidebar --- */
 .sidebar {
   width: 260px;
   background-color: var(--primary);
@@ -31,6 +31,7 @@ body {
   padding: 20px;
   display: flex;
   flex-direction: column;
+  flex-shrink: 0; /* Küçülmesini engelle */
 }
 
 .brand {
@@ -51,17 +52,23 @@ body {
   transition: 0.2s;
 }
 
+.nav-item:hover {
+  background-color: rgba(255,255,255,0.05);
+  opacity: 1;
+}
+
 .nav-item.active {
   background-color: rgba(255,255,255,0.1);
   opacity: 1;
   font-weight: 600;
 }
 
-/* Main Content */
+/* --- Main Content --- */
 .main-content {
   flex: 1;
   padding: 30px 40px;
   overflow-y: auto;
+  background-color: var(--background);
 }
 
 .header {
@@ -90,7 +97,7 @@ body {
   gap: 6px;
 }
 
-/* Stats Cards */
+/* --- Cards & Grid --- */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -118,13 +125,13 @@ body {
   color: var(--primary);
 }
 
-/* Content Grid (Form + Table) */
 .content-grid {
   display: grid;
   grid-template-columns: 350px 1fr;
   gap: 25px;
 }
 
+/* --- Forms --- */
 .form-group {
   margin-bottom: 15px;
 }
@@ -142,8 +149,10 @@ body {
   border: 1px solid var(--border);
   border-radius: 6px;
   font-size: 0.95rem;
-  box-sizing: border-box; /* Tașmayı önler */
+  box-sizing: border-box;
   transition: 0.2s;
+  background: white;
+  color: var(--text-main);
 }
 
 .input-field:focus {
@@ -168,7 +177,7 @@ body {
   background-color: var(--accent);
 }
 
-/* Table */
+/* --- Tables --- */
 .data-table {
   width: 100%;
   border-collapse: collapse;
@@ -180,15 +189,51 @@ body {
   color: var(--text-muted);
   font-size: 0.85rem;
   border-bottom: 2px solid var(--background);
+  font-weight: 600;
 }
 
 .data-table td {
   padding: 16px;
   border-bottom: 1px solid var(--background);
   font-size: 0.95rem;
+  color: var(--text-main);
 }
 
 .amount-tag {
   font-weight: 600;
   color: var(--success);
+}
+
+/* --- Danger Buttons (Yeni Eklenenler) --- */
+.btn-danger {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+.btn-danger:hover {
+  background-color: #dc2626;
+}
+
+.btn-danger-outline {
+  background-color: transparent;
+  color: #ef4444;
+  border: 1px solid #ef4444;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.btn-danger-outline:hover {
+  background-color: #fef2f2;
 }

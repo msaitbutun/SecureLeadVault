@@ -13,8 +13,8 @@ app.use(express.json());
 
 // --- MONGODB BAĞLANTISI ---
 // Docker içindeki 'mongo' servisine bağlanır
-const MONGO_URI = 'mongodb://mongo:27017/secureleads';
-
+// Öncelik Environment Variable'da, yoksa Docker adresi (Fallback)
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://mongo:27017/secureleads';
 mongoose.connect(MONGO_URI)
   .then(() => console.log('✅ MongoDB Bağlantısı Başarılı'))
   .catch(err => console.error('❌ MongoDB Hatası:', err));
@@ -43,5 +43,35 @@ app.post('/api/leads', async (req, res) => {
     res.status(500).json({ error: 'Kaydedilemedi' });
   }
 });
+// --- YENİ EKLENECEK SİLME ROTALARI ---
 
-app.listen(PORT, () => console.log(`🚀 Server ${PORT} portunda çalışıyor`));
+// 1. Seçili Olanları Sil (Batch Delete)
+app.post('/api/leads/delete-batch', async (req, res) => {
+  try {
+    const { ids } = req.body; // Frontend'den ID listesi gelecek
+    // MongoDB'nin $in operatörü ile "ID'si bu listenin içinde olanları sil" diyoruz
+    await Lead.deleteMany({ _id: { $in: ids } });
+    res.json({ message: 'Seçilenler silindi' });
+  } catch (error) {
+    res.status(500).json({ error: 'Silme işlemi başarısız' });
+  }
+});
+
+// 2. Hepsini Sil (Delete All)
+app.delete('/api/leads', async (req, res) => {
+  try {
+    await Lead.deleteMany({}); // Filtre yok, alayını siler
+    res.json({ message: 'Tüm kayıtlar temizlendi' });
+  } catch (error) {
+    res.status(500).json({ error: 'Temizleme başarısız' });
+  }
+});
+
+// ... app.listen kodu burada kalacak ...
+
+if (require.main === module) {
+    app.listen(PORT, () => console.log(`🚀 Server ${PORT} portunda çalışıyor`));
+}
+
+// Ama test için import ediliyorsa, sadece app'i dışarı ver (Listen etme)
+module.exports = app;
