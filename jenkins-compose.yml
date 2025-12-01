@@ -1,7 +1,7 @@
 services:
   jenkins:
     image: jenkins/jenkins:lts-jdk17
-    container_name: jenkins-jenkins-master
+    container_name: jenkins-master
     privileged: true
     user: root
     ports:
