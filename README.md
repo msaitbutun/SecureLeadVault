@@ -38,7 +38,7 @@ graph TD;
   * **Role-Based Access Control (RBAC):** Unauthorized access is prevented by simulating `Sales Rep` and `Manager` roles.
   * **Container Hardening:** Docker images are optimized, and non-root user principles are applied.
   * **Security Headers:** HTTP header security is enforced using the `Helmet` library.
-  * **Attack Surface Reduction:** Unnecessary ports are closed; only the API Gateway (Nginx) is exposed.
+  * **Attack Surface Reduction:** Unnecessary ports are closed.
 
 ### ⚙️ DevOps & Automation
 
@@ -105,4 +105,5 @@ docker exec secure-backend npm test
 -----
 
 **Developed by Muhammed Sait Bütün**
+
 
