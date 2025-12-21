@@ -67,7 +67,24 @@ pipeline {
             steps {
                 script {
                     echo "🛡️ Trivy Security Scan Started..."
-                    echo "✅ Image Scan Passed: Low Severity."
+                    
+                    // 1. Backend İmajını Tara
+                    // '|| true' ekledik ki CV inceleyen kişi denerse ve kritik açık çıkarsa pipeline patlamasın, görsün.
+                    // Gerçek hayatta burası 'exit-code 1' olur ve pipeline patlar.
+                    sh """
+                    docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+                    aquasecurity/trivy image --severity HIGH,CRITICAL --no-progress \
+                    ${APP_NAME}-backend:latest || true
+                    """
+
+                    // 2. Frontend İmajını Tara
+                    sh """
+                    docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+                    aquasecurity/trivy image --severity HIGH,CRITICAL --no-progress \
+                    ${APP_NAME}-frontend:latest || true
+                    """
+                    
+                    echo "✅ Image Scan Completed."
                 }
             }
         }
@@ -80,4 +97,5 @@ pipeline {
             }
         }
     }
+
 }
